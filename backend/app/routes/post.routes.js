@@ -16,10 +16,10 @@ const multer = require('../middleware/multer-config')
   router.get("/published", auth, posts.findAllPublished);
 
   // Retrieve a single Post with id
-  router.get("/:id", auth, posts.findOne);
+  router.get("/:id", auth, posts.getOnePost);
 
   // Update a Post with id
-  router.put("/:id", auth, multer, posts.update);
+  router.put("/:id", auth, multer, posts.updatePost);
 
   // Delete a Post with id
   router.delete("/:id", auth, posts.delete);

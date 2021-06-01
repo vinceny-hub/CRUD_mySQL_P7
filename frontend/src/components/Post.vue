@@ -15,7 +15,7 @@
                   <div class="list-group">     
                     <div class="float meta ">
                       <div class="title h5">    <!-- post username  -->
-                        <a href="#"><b> {{ currentPost.username }} </b></a>
+                        <a href="#"><b> {{ currentPost.user.username }} </b></a>
                           made a post.
                       </div>
                       <h6 class="text-muted time">1 minute ago</h6>
@@ -129,7 +129,7 @@ export default {
       const file = this.$refs.file.files[0];
         this.currentPost.imageUrl = file;
         console.log(e)
-        console.log(this.currentPost.imageUrl)        
+        // console.log(this.currentPost.imageUrl)        
     },
     // upload image
      uploadImage() {
@@ -137,8 +137,8 @@ export default {
      let id = this.currentPost.id
      formData.append("file", this.currentPost.imageUrl, this.currentPost.imageUrl.name);
      UpLoadFilesService.update(id, formData)
-        .then(response => {
-          console.log(response.data);
+        .then(() => {
+          // console.log(response.data);
           this.message = 'The post was updated successfully!';
           this.$router.push({ name: "posts" });
              
@@ -149,22 +149,22 @@ export default {
     },
     // save comment
      saveComment() {       
-      let dataUser = JSON.parse(localStorage.getItem("user"))
-      console.log(dataUser)     
+      // let dataUser = JSON.parse(localStorage.getItem("user"))
+      // console.log(dataUser)     
       var data = {
         
-        description: this.comments.description,
-        user_Id : dataUser.user_Id,
-        username : dataUser.username,
-        post_id : this.currentPost.id,
-        id: this.comments.id,
+        description: this.comment.description,
+        // userId : dataUser.userId,
+        // username : dataUser.username,
+        userId : this.currentPost.id,
+        // id: this.comments.id,
                 
       }   
     
       PostCommentService.create(data)
         .then(response => {
           this.comment.id = response.data.id;      
-          console.log(response.data);
+          // console.log(response.data);
           this.submitted = true;    
           this.message = 'The post was updated successfully!';
           this.$router.push({ name: "posts" });
@@ -174,22 +174,22 @@ export default {
         });
     },
     // get all comment of a post
-     getComment() {
-      PostCommentService.getAll()
-        .then(response => {
-          this.comments = response.data;
-          console.log(response.data);        
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
+    //  getComment() {
+    //   PostCommentService.getAll()
+    //     .then(response => {
+    //       this.comments = response.data;
+    //       console.log(response.data);        
+    //     })
+    //     .catch(e => {
+    //       console.log(e);
+    //     });
+    // },
     // get a post 
     getPost(id) {
       PostDataService.get(id)
-        .then(response => {
+        .then((response)=> {
           this.currentPost = response.data;
-          console.log(response.data);
+          // console.log(response.data);
           console.log(id)
         })
         .catch(e => {
@@ -225,8 +225,12 @@ export default {
     },
     // updating post
     updatePost() {
-      PostDataService.update(this.currentPost.id, this.currentPost)
-        .then(response => {
+       var upData = {    
+       description: this.currentPost.description}
+       JSON.parse(JSON.stringify(upData))
+      PostDataService.updateAPost(this.currentPost.id,upData)
+      // console.log(this.currentPost.id,upData)
+        .then((response) => {
           console.log(response.data);
           this.message = 'The post was updated successfully!';
           this.$router.push({ name: "posts" });
@@ -239,10 +243,10 @@ export default {
     deletePost() {
        PostDataService.delete(this.currentPost.id)
       
-        .then(response => {
+        .then(()=> {
          
           PostCommentService.delete(this.currentPost.id)   
-          console.log(response.data);
+          // console.log(response.data);
          
           this.$router.push({ name: "posts" })
           .then(() => {
@@ -259,7 +263,7 @@ export default {
   mounted() {
     this.message = '';
     this.getPost(this.$route.params.id);
-    this.getComment();
+    // this.getComment();
   },
 
   computed: {

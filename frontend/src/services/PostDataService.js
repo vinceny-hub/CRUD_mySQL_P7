@@ -13,7 +13,7 @@ class PostDataService {
     return http.post("/posts", data);
   }
 
-  update(id, data) {
+  updateAPost(id, data) {
     return http.put(`/posts/${id}`, data);
   }
 

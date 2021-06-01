@@ -110,7 +110,7 @@ export default {
   updateUser(){
     PostDataService.updateUser(this.currentUser.id, this.currentUser)
       .then(response => {   
-      this.logOut()       
+      // this.logOut()       
       console.log(response.data);
       // this.posts.push(data)
       // this.$router.push({ name: "posts" });

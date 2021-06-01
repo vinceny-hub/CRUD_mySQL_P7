@@ -1,6 +1,7 @@
 const db = require("../models/");
 require('../middleware/auth')
-const Comment = db.comments;
+const Comment = db.comment;
+const User = db.user;
 const Op = db.Sequelize.Op;
 
 
@@ -14,10 +15,10 @@ exports.create = (req, res) => {
     }
     // Create a Comment
     const comment = {
-      post_id: req.body.post_id,
+      // post_id: req.body.post_id,
       description: req.body.description,
-      user_Id: req.body.user_Id,
-      username:  req.body.username,
+      userId: req.body.userId,
+      // username:  req.body.username,
   
     };
     // Save Comment in the database
@@ -36,7 +37,13 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const description = req.query.description;
     var condition = description ? { description: { [Op.like]: `%${description}%` } } : null;
-    Comment.findAll({ where: condition })
+    Comment.findAll({ where: condition,  include: [
+      {
+        model: User,
+        attributes: ["username"]
+     
+      }
+    ] })
     .then(data => {
       res.send(data);
     })

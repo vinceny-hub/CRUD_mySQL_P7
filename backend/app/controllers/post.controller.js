@@ -58,10 +58,20 @@ exports.findAll = (req, res) => {
     });
 };
       // Find a post
-exports.findOne = (req, res) => {
+exports.getOnePost = (req, res) => {
   const id = req.params.id;
 
-  Post.findByPk(id)
+  // Post.findByPk(id)
+
+  Post.findOne({
+    // on récupère le post avec l'id fourni en incluant les tables et attributs nécessaires
+    where: { id: id },
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+       } ]
+    })
     .then(data => {
       res.send(data);
     })
@@ -73,12 +83,13 @@ exports.findOne = (req, res) => {
 };
       // Update a post or an image
       // Update post :
-exports.update = (req, res) => {
+      
+exports.updatePost = (req, res) => {
   const id = req.params.id;
   if (req.body.description != null){ 
-    
+ 
   Post.update(req.body, {
-    where: { id: id }
+    where: { id : id }
   })
     .then(num => {
       if (num == 1) {
@@ -97,11 +108,10 @@ exports.update = (req, res) => {
         message: "Error updating Post with id=" + id
       });
     })
-    .then(post => res.status(200).json({message:'sauce modifié !'}))
+    // .then(POST => res.status(200).json({message:'sauce modifié !'}))
     .catch(error => res.status(400).json({ error }))
 
-  }else{
-      // Update image
+  }else{                    // Update image
     Post.findByPk(id)
     .then(data => {
       res.send(data)
