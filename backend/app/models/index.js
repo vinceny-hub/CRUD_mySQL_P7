@@ -41,7 +41,11 @@ db.user = require("./user.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 
 
-db.user.hasMany(db.posts)
+db.user.hasMany(db.posts, {
+  foreignKey: {
+    allowNull: false
+  }, onDelete:'CASCADE', 
+}),
 
 // db.comments.belongsTo(db.user, {
 //   foreignKey: {
