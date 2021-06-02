@@ -27,45 +27,45 @@
                     <img :src="currentPost.imageUrl">
                   </div>   
                     <!-- shown if editing -->                                                   
-                  <textarea-autosize v-show="dataUser.user_Id == currentPost.user_Id  && !currentPost.imageUrl || showAdminBoard && currentPost.description" placeholder="Type something here..." ref="myTextarea"  :min-height="30" :max-height="350" v-else type="text"   class="form-control" id="description" v-model="currentPost.description"/>
+                  <textarea-autosize v-show="dataUser.id == currentPost.userId  && !currentPost.imageUrl || showAdminBoard && currentPost.description" placeholder="Type something here..." ref="myTextarea"  :min-height="30" :max-height="350" v-else type="text"   class="form-control" id="description" v-model="currentPost.description"/>
                   
                   <div v-show="editing" class="form-group">
                     <div class="custom-file">
                                                             <!-- shown if editing -->   
-                      <input  v-show="dataUser.user_Id == currentPost.user_Id && currentPost.imageUrl || showAdminBoard && currentPost.imageUrl" type="file" ref="file" @change="onSelect" class="" id="">
+                      <input  v-show="dataUser.id == currentPost.userId && currentPost.imageUrl || showAdminBoard && currentPost.imageUrl" type="file" ref="file" @change="onSelect" class="" id="">
                       <label class=""></label>                 
                     </div>
                     <div class="py-3"></div>
                   </div>
                 </div>
-                <img  v-if="dataUser.user_Id == currentPost.user_Id || showAdminBoard" class="card-ico" src="../img/icon1.png" alt="icon logo groupomania">
+                <img  v-if="dataUser.id == currentPost.userId || showAdminBoard" class="card-ico" src="../img/icon1.png" alt="icon logo groupomania">
                 <img  v-else class="card-img" src="../img/icon-left-font-sized1.png" alt="logo groupomania">
                                      <!-- Buttons accesssibles if current user is user whom made post or administrator-->   
                 <a href="#top"> <button v-show="!editing"  class="btn btn-outline pink float-right buttonCEC"> Comment </button></a>
-                <button v-show="isDisplay" v-if="dataUser.user_Id == currentPost.user_Id || showAdminBoard" class="btn btn-success float-right buttonCEC" href="#top" @click="editPost(currentPost)"> Edit </button>
+                <button v-show="isDisplay" v-if="dataUser.id == currentPost.userId || showAdminBoard" class="btn btn-success float-right buttonCEC" href="#top" @click="editPost(currentPost)"> Edit </button>
                 <button v-show="editing" v-if="currentPost.description" class="btn btn-success mr-2 float-right" type="submit" @click="editPost(currentPost)"> Update </button>
                 <button v-show="editing" v-if="currentPost.imageUrl" class="btn btn-success mr-2 float-right" type="submit" @click="uploadImage(currentPost)"> Upload </button>
                 <button v-show="!editing" class="btn btn-secondary mr-2 float-right" @click="cancelled()"> Back </button>     
-                <button v-show="editing" v-if="dataUser.user_Id == currentPost.user_Id  || showAdminBoard"  id="btnC" class="btn btn-secondary mr-2 float-right marginRightButton" @click="cancel()"> Cancel </button>
-                <button v-show="editing" v-if="dataUser.user_Id == currentPost.user_Id  || showAdminBoard" class="badge badge-danger mr-2" @click="deletePost()"> Delete </button>
+                <button v-show="editing" v-if="dataUser.id == currentPost.userId  || showAdminBoard"  id="btnC" class="btn btn-secondary mr-2 float-right marginRightButton" @click="cancel()"> Cancel </button>
+                <button v-show="editing" v-if="dataUser.id == currentPost.userId  || showAdminBoard" class="badge badge-danger mr-2" @click="deletePost()"> Delete </button>
                 <div class="post-heading">
                   <div class="float meta">
                     <div class="title h5">
                       <div class="" v-show="!editing">      <!-- get all comments of a post-->   
                         <div v-for="comment in comments" :key="comment.id">  
-                          <div v-if="currentPost.id == comment.post_id" class="comment float-right card rounded card-white"> 
+                          <div v-if="currentPost.id == comment.postId" class="comment float-right card rounded card-white"> 
                             <div class="list-group-item">
-                              <a href="#"><b> {{ comment.username }} </b></a> 
+                              <a href="#"><b> {{ comment.user.username }} </b></a> 
                               <span> made a comment </span>  
                               <h6 class="text-muted time">1 minute ago</h6> 
                               <div>{{ comment.description }} </div>    
                                              <!-- Edit button is accesssible if current user is user whom made comment of the post or administrator-->  
-                              <a :href="'/comments/' + comment.id"><button v-if="dataUser.user_Id == comment.user_Id || showAdminBoard" class="btn btn-success float-right"> Edit </button></a>
+                              <a :href="'/comments/' + comment.id"><button v-if="dataUser.id == comment.userId || showAdminBoard" class="btn btn-success float-right"> Edit </button></a>
                             </div>
                           </div>
                         </div>
                         <div class="postCard">        
-                          <textarea-autosize placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" type="text"   class="form-control" id="description" autofocus v-model="comments.description"/>
+                          <textarea-autosize placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" type="text"   class="form-control" id="description" autofocus v-model="comment.description"/>
                         </div>
                         <div class="d-flex justify-content-between float-right width-box">   <img class="card-img float-left" src="../img/icon-left-font-sized1.png" alt="logo groupomania">
                           <div  class="">
@@ -109,14 +109,15 @@ export default {
 
         comment: {      
           id: null,
-          post_id: "",
+         
           // title: "",
           description: "",
-          user_Id: "",
+          // userId: "",
           username: "",
           published: false
       },
-             
+      userId: "", 
+      postId: "",   
       isDisplay:true,
       currentPost: null,
       editing: false,      
@@ -148,20 +149,47 @@ export default {
         });
     },
     // save comment
-     saveComment() {       
+     saveComment() {     
+       
+      //   var upData = {    
+      //  description: this.currentPost.description}
+      //  JSON.parse(JSON.stringify(upData))
+      // PostDataService.updateAPost(this.currentPost.id,upData)
+      // // console.log(this.currentPost.id,upData)
+      //   .then((response) => {
+      //     console.log(response.data);
+      //     this.message = 'The post was updated successfully!';
+      //     this.$router.push({ name: "posts" });
+      //   })
+
       // let dataUser = JSON.parse(localStorage.getItem("user"))
       // console.log(dataUser)     
-      var data = {
+      //  var comData = {
         
+      //   description: this.comment.description
+      //  }
+      //   var comUData = {
+      //   userId : dataUser.id 
+      //   }
+       
+      //     var comPData = {
+      //  postId : this.currentPost.id
+      //     }   
+
+          // let data = { comData, comPData,comUData }
+      // }   
+      // let comDATA = JSON.stringify(comData)
+      // console.log(comData)
+
+      let data = {
         description: this.comment.description,
-        // userId : dataUser.userId,
-        // username : dataUser.username,
-        userId : this.currentPost.id,
-        // id: this.comments.id,
-                
-      }   
-    
+        // userId: dataUser.id,
+        postId: this.currentPost.id
+      }
       PostCommentService.create(data)
+      //  PostCommentService.create (comUData)
+      //   PostCommentService.create(comPData)
+      // console.log(comDATA)
         .then(response => {
           this.comment.id = response.data.id;      
           // console.log(response.data);
@@ -174,23 +202,23 @@ export default {
         });
     },
     // get all comment of a post
-    //  getComment() {
-    //   PostCommentService.getAll()
-    //     .then(response => {
-    //       this.comments = response.data;
-    //       console.log(response.data);        
-    //     })
-    //     .catch(e => {
-    //       console.log(e);
-    //     });
-    // },
+     getComment() {
+      PostCommentService.getAll()
+        .then(response => {
+          this.comments = response.data;
+          console.log(response.data);        
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     // get a post 
     getPost(id) {
       PostDataService.get(id)
         .then((response)=> {
           this.currentPost = response.data;
           // console.log(response.data);
-          console.log(id)
+          console.log(this.currentPost.userId)
         })
         .catch(e => {
           console.log(e);
@@ -227,7 +255,7 @@ export default {
     updatePost() {
        var upData = {    
        description: this.currentPost.description}
-       JSON.parse(JSON.stringify(upData))
+      //  JSON.parse(JSON.stringify(upData))
       PostDataService.updateAPost(this.currentPost.id,upData)
       // console.log(this.currentPost.id,upData)
         .then((response) => {
@@ -263,7 +291,7 @@ export default {
   mounted() {
     this.message = '';
     this.getPost(this.$route.params.id);
-    // this.getComment();
+    this.getComment();
   },
 
   computed: {

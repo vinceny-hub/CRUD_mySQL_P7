@@ -5,7 +5,7 @@ const comments = require("../controllers/comment.controller");
 
 
   // Create a new Comment
-  router.post("/", auth, comments.create);
+  router.post("/", auth, comments.createComment);
 
   // Retrieve all Comments
   router.get("/", auth, comments.findAll);

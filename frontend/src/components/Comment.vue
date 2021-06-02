@@ -9,7 +9,7 @@
               <div   class="list-group">
                 <div class="float meta ">
                   <div class="title h5">                <!-- comment username -->
-                    <a href="#"><b> {{ currentComment.username }} </b></a>
+                    <a href="#"><b> {{ currentComment.user.username }} </b></a>
                       made a post.
                   </div>
                   <h6 class="text-muted time">1 minute ago</h6>
@@ -18,11 +18,11 @@
               <div v-if="!editing"> <h5><strong>{{ currentComment.description }}</strong></h5></div> 
               <textarea-autosize placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" v-else type="text"  class="form-control" id="description" v-model="currentComment.description"/>
             </div>                                              <!-- edit, cancel and upload button. This is accesssible if current user is user whom made post or administrator-->
-            <img v-if="dataUser.user_Id == currentComment.user_Id || showAdminBoard" class="card-ico" src="../img/icon1.png" alt="icon groupomania">
-            <button v-if="dataUser.user_Id == currentComment.user_Id || showAdminBoard" class="btn btn-success float-right" @click="editPost(currentComment)"> {{editing? 'Update':'Modify'}} </button>
+            <img v-if="dataUser.id == currentComment.userId || showAdminBoard" class="card-ico" src="../img/icon1.png" alt="icon groupomania">
+            <button v-if="dataUser.id == currentComment.userId || showAdminBoard" class="btn btn-success float-right" @click="editPost(currentComment)"> {{editing? 'Update':'Modify'}} </button>
             <button v-show="!editing" class="btn btn-secondary mr-2 float-right" @click="$router.go(-1)"> Back </button>   
-            <button v-show="editing" v-if="dataUser.user_Id == currentComment.user_Id || showAdminBoard" class="btn btn-secondary mr-2 float-right" @click="cancel()"> Cancel </button>
-            <button  v-show="editing" v-if="dataUser.user_Id == currentComment.user_Id || showAdminBoard" class="badge badge-danger mr-2" @click="deleteComment"> Delete </button>     
+            <button v-show="editing" v-if="dataUser.id == currentComment.id || showAdminBoard" class="btn btn-secondary mr-2 float-right" @click="cancel()"> Cancel </button>
+            <button  v-show="editing" v-if="dataUser.id == currentComment.id || showAdminBoard" class="badge badge-danger mr-2" @click="deleteComment"> Delete </button>     
           </div>
         </div>
       </div>
@@ -62,9 +62,9 @@ export default {
       console.log(dataUser)  
       var data = {     
         description: this.comments.description,
-        user_Id : dataUser.user_Id,
+        userId : dataUser.id,
         username : dataUser.username,
-        post_id : this.currentPost.id,
+        postId : this.currentPost.id,
         id: this.comments.id,        
       }
     
@@ -119,7 +119,9 @@ export default {
     },
     // update a comment
     updateComment() {
-      PostCommentService.update(this.currentComment.id, this.currentComment)
+        var data = {    
+       description: this.currentComment.description}
+      PostCommentService.update(this.currentComment.id, data)
         .then(response => {
           console.log(response.data);
           this.message = 'The post was updated successfully!';

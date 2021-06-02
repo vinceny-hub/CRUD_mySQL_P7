@@ -10,6 +10,7 @@ class PostCommentService {
   }
 
   create(data) {
+    console.log(data)
     return http.post("/comment", data);
   }
 

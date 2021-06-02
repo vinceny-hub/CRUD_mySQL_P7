@@ -1,12 +1,13 @@
 const db = require("../models/");
 require('../middleware/auth')
-const Comment = db.comment;
+const Comment = db.comments;
 const User = db.user;
 const Op = db.Sequelize.Op;
 
 
-exports.create = (req, res) => {
+exports.createComment = (req, res) => {
     // Validate request
+    console.log(req.body)
     if (!req.body.description) {
       res.status(425).send({
         message: "Content can not be empty!"
@@ -17,10 +18,11 @@ exports.create = (req, res) => {
     const comment = {
       // post_id: req.body.post_id,
       description: req.body.description,
-      userId: req.body.userId,
-      // username:  req.body.username,
+      userId: '1',
+      postId:  req.body.postId,
   
     };
+    console.log(req.params.id)
     // Save Comment in the database
     Comment.create(comment)
       .then(data => {
@@ -37,13 +39,15 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const description = req.query.description;
     var condition = description ? { description: { [Op.like]: `%${description}%` } } : null;
-    Comment.findAll({ where: condition,  include: [
+    Comment.findAll({ where: condition, 
+       include: [
       {
         model: User,
         attributes: ["username"]
      
       }
-    ] })
+    ] 
+  })
     .then(data => {
       res.send(data);
     })
@@ -58,7 +62,15 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Comment.findByPk(id)
+  Comment.findOne({
+    // on récupère le post avec l'id fourni en incluant les tables et attributs nécessaires
+    where: { id: id },
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+       } ]
+    })
     .then(data => {
       res.send(data);
     })
@@ -69,6 +81,14 @@ exports.findOne = (req, res) => {
     });
 };
     // Update a commment 
+
+    // const id = req.params.id;
+    // if (req.body.description != null){ 
+   
+    // Post.update(req.body, {
+    //   where: { id : id }
+    // })
+
 exports.update = (req, res) => {
   const id = req.params.id;
   Comment.update(req.body, {

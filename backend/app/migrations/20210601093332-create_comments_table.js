@@ -9,21 +9,28 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
-    userId:{
+    // userId:{
+    // allowNull: true,
+    //     type: Sequelize.INTEGER(11),
+    //     // references: {
+    //     //   model: 'users',
+    //     //   key: 'id'
+    //     // }
+    //     },
+  
+    // postId:{
+    //   allowNull: true,
+    //     type: Sequelize.INTEGER(11),
+    //     // references: {
+    //     //   model: 'posts',
+    //     //   key: 'id'
+    //     // }
+    //     },
+  
+    description: {
       type: Sequelize.STRING
     },
-    username:{
-      type: Sequelize.STRING
-    },
-    post_id:{
-      type: Sequelize.STRING
-    },
-    // description: {
-    //   type: Sequelize.STRING
-    // },
-    // content_Id: {
-    //   type: Sequelize.STRING
-    // },
+  
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE  
 

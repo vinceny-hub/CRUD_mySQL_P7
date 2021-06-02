@@ -113,7 +113,7 @@ export default {
       // this.logOut()       
       console.log(response.data);
       // this.posts.push(data)
-      // this.$router.push({ name: "posts" });
+      this.$router.push({ name: "posts" });
       })
       .catch(e => {
         console.log(e);

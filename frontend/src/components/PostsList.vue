@@ -1,5 +1,6 @@
 
 <template>
+
   <div class="container-fluid">
     <div class="row h-100 justify-content-center align-items-center">
       <div class="col-md-8 gedf-main">
@@ -67,9 +68,9 @@
                     <div class="post-heading">
                       <div class="float meta">
                         <div class="title h5">                                   <!-- comments in post -->
-                          <div  v-for="comment in comments" :key="comment.id"> <div class="comment float-right card rounded card-white" v-if="post.id == comment.post_id">                    
+                          <div  v-for="comment in comments" :key="comment.id"> <div class="comment float-right card rounded card-white" v-if="post.id == comment.postId">                    
                             <div class="list-group-item">  
-                              <div class="title h5"> <a href="#"><b> {{ comment.username }} </b></a>  made a comment </div>  
+                              <div class="title h5"> <a href="#"><b> {{ comment.user.username }} </b></a>  made a comment </div>  
                               <h6 class="text-muted time">1 minute ago</h6> 
                               <div>{{ comment.description }} </div>
                             </div>    
@@ -112,7 +113,7 @@ export default {
         id: null,
         // title: "",
         description: "",
-        user_Id: "",
+        userId: "",
         username: "",
         published: false,
         imageUrl: "",
@@ -123,7 +124,7 @@ export default {
         id: null,
         // title: "",
         description: "",
-        user_Id: "",
+        userId: "",
         username: "",
         published: false
       },
@@ -215,7 +216,7 @@ export default {
     PostCommentService.getAll()
       .then(response => {          
         this.comments = response.data;
-        console.log(response.data);
+        console.log(response.data.description);
         console.log(this.comments);
       })
       .catch(e => {
@@ -248,6 +249,7 @@ export default {
     },
       // get all posts
       retrievePosts() {
+        // console.log()
       PostDataService.getAll()
         .then(response => {
         
