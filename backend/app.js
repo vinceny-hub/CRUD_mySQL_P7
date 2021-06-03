@@ -22,36 +22,60 @@ app.use((req, res, next) => {   // headers access informations
 app.use(helmet())
 
 
-const db = require("./app/models/index"); // get db from models and sequelize
- 
+// const db = require("./app/models/index"); // get db from models and sequelize
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+//   // initial();
+// });
+
 
 // const dblogin = require("./app/modelsUser/index");
-const Role = db.role;
+// const Role = db.role;
+// const User = db.user;
 
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
-//   initial();
+//   // initial();
 // });
 
-db.sequelize.sync();
-initial();
 
-function initial() {  // Roles indexes
-  Role.create({
-    id: 1,
-    name: "user"
-  });
+// require("./app/config/admin")
+// require("./app/config/roles")
+// Role.sequelize.sync();
+// initial();
+
+// function initial() {  // Roles indexes
+//   Role.create({
+//     id: 1,
+//     name: "user"
+//   });
  
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
+//   Role.create({
+//     id: 2,
+//     name: "moderator"
+//   });
  
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
-}
+//   Role.create({
+//     id: 3,
+//     name: "admin"
+//   });
+//   User.create({
+//     id:1,
+//     username: 'admin',
+//     email: 'admin@live.fr',
+//     password: "admin",
+//     roles: ['admin', 'user']
+
+//   });
+//   User.create({
+//     id:2,
+//     username: 'moderator',
+//     email: 'moderator@live.fr',
+//     password: "moderator",
+//     roles: ['moderator', 'user']
+//   });
+
+// }
 
 
 //  POST request format to JSON
@@ -65,6 +89,7 @@ const postRoutes = require("./app/routes/post.routes"); // get route post
 const commentRoutes = require("./app/routes/comment.routes") // get route comments
 const commentPostRoutes = require("./app/routes/commentPost.routes") // get route delete a comment of a post
 const userManageRoutes = require("./app/routes/userManage.routes")
+const { role } = require('./app/models/index')
 
 
 require('./app/routes/auth.routes')(app);  // autjentification route

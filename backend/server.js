@@ -48,6 +48,16 @@ server.on('listening', () => {
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
   console.log('Listening on ' + bind)
 })
+const db = require("./app/models/index"); // get db from models and sequelize
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
+  // initial();
+require("./app/config/roles")
+require("./app/config/admin")
+ });
+// require("./app/config/roles")
+// require("./app/config/admin")
+
 
 
 
