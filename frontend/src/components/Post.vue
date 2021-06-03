@@ -183,7 +183,7 @@ export default {
 
       let data = {
         description: this.comment.description,
-        // userId: dataUser.id,
+        u: this.currentUser.id,
         postId: this.currentPost.id
       }
       PostCommentService.create(data)
@@ -278,7 +278,7 @@ export default {
          
           this.$router.push({ name: "posts" })
           .then(() => {
-          location.reload()
+          // location.reload()
           })
          
         })

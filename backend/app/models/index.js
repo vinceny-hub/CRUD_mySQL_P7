@@ -43,11 +43,11 @@ db.role = require("./role.model.js")(sequelize, Sequelize);
 
 // associate posts/users
 
-db.user.hasMany(db.posts, {
-  foreignKey: {
-    allowNull: false
-  }, onDelete:'CASCADE', 
-}),
+// db.user.hasMany(db.posts, {
+//   foreignKey: {
+//     allowNull: false
+//   }, onDelete:'CASCADE', 
+// }),
 
 db.posts.belongsTo(db.user, {
   foreignKey: {
@@ -57,11 +57,11 @@ db.posts.belongsTo(db.user, {
 
 // associate comments/user
 
-db.user.hasMany(db.comments, {
-  foreignKey: {
-    allowNull: false
-  }, onDelete:'CASCADE', 
-}),
+// db.user.hasMany(db.comments, {
+//   foreignKey: {
+//     allowNull: false
+//   }, onDelete:'CASCADE', 
+// }),
 
 db.comments.belongsTo(db.user, {
   foreignKey: {
@@ -71,11 +71,11 @@ db.comments.belongsTo(db.user, {
 
 // associate comments/posts
 
-db.posts.hasMany(db.comments, {
-  foreignKey: {
-    allowNull: false
-  }, onDelete:'CASCADE', 
-}),
+// db.posts.hasMany(db.comments, {
+//   foreignKey: {
+//     allowNull: false
+//   }, onDelete:'CASCADE', 
+// }),
 
 db.comments.belongsTo(db.posts, {
   foreignKey: {

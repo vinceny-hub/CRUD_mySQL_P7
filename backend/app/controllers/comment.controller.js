@@ -1,3 +1,4 @@
+const { faUserInjured } = require("@fortawesome/free-solid-svg-icons");
 const db = require("../models/");
 require('../middleware/auth')
 const Comment = db.comments;
@@ -7,6 +8,7 @@ const Op = db.Sequelize.Op;
 
 exports.createComment = (req, res) => {
     // Validate request
+    let id = req.body.u
     console.log(req.body)
     if (!req.body.description) {
       res.status(425).send({
@@ -14,12 +16,14 @@ exports.createComment = (req, res) => {
       });
       return;
     }
+
+    
     // Create a Comment
     const comment = {
       // post_id: req.body.post_id,
       description: req.body.description,
-      userId: '1',
-      postId:  req.body.postId,
+      userId: id,
+      postId: req.body.postId,
   
     };
     console.log(req.params.id)

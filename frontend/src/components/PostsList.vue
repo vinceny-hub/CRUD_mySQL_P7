@@ -12,7 +12,8 @@
                   <a v-on:click="isHidden = true" class="nav-link active"    id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make a publication</a>
                 </li>
                 <li class="nav-item">
-                  <a  v-on:click="isHidden = false" class="nav-link" v-bind="noImage" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images"> Images </a>
+                  <!--v-bind="noImage"--> 
+                  <a  v-on:click="isHidden = false" class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images"> Images </a>
                 </li>
               </ul>
             </div>
@@ -223,9 +224,9 @@ export default {
         console.log(e);
       });
   },     
-  load(){
-      location.reload()
-  }, 
+  // load(){
+  //     location.reload()
+  // }, 
       // update a post
       updatePost() {
       PostDataService.update(this.currentPost.id, this.currentPost)

@@ -21,8 +21,8 @@
             <img v-if="dataUser.id == currentComment.userId || showAdminBoard" class="card-ico" src="../img/icon1.png" alt="icon groupomania">
             <button v-if="dataUser.id == currentComment.userId || showAdminBoard" class="btn btn-success float-right" @click="editPost(currentComment)"> {{editing? 'Update':'Modify'}} </button>
             <button v-show="!editing" class="btn btn-secondary mr-2 float-right" @click="$router.go(-1)"> Back </button>   
-            <button v-show="editing" v-if="dataUser.id == currentComment.id || showAdminBoard" class="btn btn-secondary mr-2 float-right" @click="cancel()"> Cancel </button>
-            <button  v-show="editing" v-if="dataUser.id == currentComment.id || showAdminBoard" class="badge badge-danger mr-2" @click="deleteComment"> Delete </button>     
+            <button v-show="editing" v-if="dataUser.id == currentComment.userId || showAdminBoard" class="btn btn-secondary mr-2 float-right" @click="cancel()"> Cancel </button>
+            <button  v-show="editing" v-if="dataUser.id == currentComment.userId || showAdminBoard" class="badge badge-danger mr-2" @click="deleteComment"> Delete </button>     
           </div>
         </div>
       </div>
