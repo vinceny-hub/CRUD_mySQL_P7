@@ -165,6 +165,14 @@ export default {
 
  
   methods: {
+
+     adminRole(){
+    if (this.currentUser.id == '1'){
+      let adRo = this.currentUser.id
+        console.log(adRo)
+    }
+  
+    },
     // get image selected
     upload(e) {   
       this.post.imageUrl = e.target.files[0];

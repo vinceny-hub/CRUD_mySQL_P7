@@ -1,44 +1,78 @@
 
 
-const db = require("../models");
-const bcrypt = require("bcrypt");
-
-const Role = db.role;
+const db = require("../models/index");
+const config = require("../config/auth.config");
 const User = db.user;
+const Role = db.role;
+const User_Roles = db.user_roles
+const Op = db.Sequelize.Op;
 
-// Fonction qui crée le compte admin dans la base de données à la connexion s'il n'existe pas
-function setAdmin(req, res) {
-  User.findOne({ where: { email: "admin@live.fr" } || { username: "admin" } })
-    .then((user) => {
-      if (!user) {
-        bcrypt
-          .hash("ADMIN", 10)
-          .then((hash) => {
-            const admin = User.create({
-              username: "admin",
-              email: "admin@live.fr",
-              password: hash,
-              roles: ['moderator', 'user']
-            })
-              .then((admin) => {
-                console.log({
-                  admin,
-                  message: `Votre compte admin est bien créé ${admin.username} !`,
-                });
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const setAdminRole =  "admin"
+
+function setAdmin(req, res) {                                   // Save User to Database
+
+    Role.create({
+        id: '3',
+        name: "admin",
+      // email: "admin@live.fr",
+      // password: bcrypt.hashSync('ADMIN', 8),
+      roles: ['admin', 'user']
+       })  
+
+  User.create({
+    username: "admin",
+    email: "admin@live.fr",
+    password: bcrypt.hashSync('ADMIN', 8),
+    roles: ['admin', 'user']
+
+                                      // password hashed 8 times
+    // user_Id: bcrypt.hashSync(req.body.username,1),
+    //  userId: User.id,
+  }) 
+                                      // Find Roles  
+    // .then(user => {
+    //   if (roles) {
+        // Role.findAll({
+        //   where: {
+        //     name: {
+        //       [Op.or]: 'admin'
+        //     }
+        //   }
+        //                             // Set Role
+        // })
+        // .then(roles => {
+        
+
+             .then(user => {
+                if (setAdminRole) {
+                  Role.findAll({
+                    where: {
+                      name: 'admin'
+                    //    {
+                    //     [Op.or]: 'admin'
+                    //   }
+                    }
+                                              // Set Role
+                  })
+                  .then(roles => {
+                    user.setRoles(roles).then(() => {
+                        console.log({ message: "admin, admin role and admin authorities were registered successfully!" });
+                    });
+                  });
+                } else {
+                                              // user role = 1
+                  user.setRoles([1]).then(() => {
+                    console.log({ message: "User was registered successfully!" });
+                  });
+                }
               })
-              .catch((error) => {
-                res.status(400).json({ error });
+              .catch(err => {
+                console.log({ message: err.message });
               });
-          })
-          .catch((error) => {
-            res.status(500).send({ error });
-          });
-      } else {
-        console.log({ message: "l'admin est déjà créé" });
-      }
-    })
-    .catch((error) => {
-      console.log({ error });
-    });
+          
+           
+            
 }
 module.exports = setAdmin();
