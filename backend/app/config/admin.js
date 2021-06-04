@@ -12,6 +12,15 @@ var bcrypt = require("bcryptjs");
 const setAdminRole =  "admin"
 
 function setAdmin(req, res) {                                   // Save User to Database
+    Role.create({
+      id: 1,
+      name: "user"
+    });
+    
+    Role.create({
+      id: 2,
+      name: "moderator"
+    });
 
     Role.create({
         id: '3',
@@ -61,11 +70,12 @@ function setAdmin(req, res) {                                   // Save User to 
                         console.log({ message: "admin, admin role and admin authorities were registered successfully!" });
                     });
                   });
-                } else {
+                } 
+                else {
                                               // user role = 1
-                  user.setRoles([1]).then(() => {
-                    console.log({ message: "User was registered successfully!" });
-                  });
+             
+                    console.log({ message: "admin was registered successfully!" });
+               
                 }
               })
               .catch(err => {
