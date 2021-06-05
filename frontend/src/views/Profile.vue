@@ -12,10 +12,10 @@
                     <h3> <strong> {{currentUser.username}} </strong> Profile </h3>
                   </header>
                   <button v-if="currentUser.id" class="badge badge-danger mr-2 btn-up float-right" @click="deleteUser"> Delete account </button>  
-                  <p class="p-up" v-if="!editingEmail"><strong>Username : {{currentUser.username}} </strong></p>
+                  <p class="p-up" v-if="!editingUsername"><strong>Username : {{currentUser.username}} </strong></p>
                   <input placeholder="Type something here..." ref="myTextarea" v-else type="text"  v-model="currentUser.username" class="form-control input-dwn" id="description"/>
-                  <!-- <button v-show="editingUsername"   id="btnC" class="badge badge-secondary mr-2 btn-dwn " @click="cancelEditUsername()"> Cancel </button>
-                  <button class="badge badge-success btn-dwn  buttonCEC" href="#top" @click="editUserUsername(currentUser)">  {{editingUsername? 'Update':'Edit'}} </button> -->
+                  <button v-show="editingUsername"   id="btnC" class="badge badge-secondary mr-2 btn-dwn " @click="cancelEditUsername()"> Cancel </button>
+                  <button class="badge badge-success btn-dwn  buttonCEC" href="#top" @click="editUserUsername(currentUser)">  {{editingUsername? 'Update':'Edit'}} </button>
                   <p class="p-up" v-if="!editingEmail"><strong>Email : {{currentUser.email}}  </strong></p>
                   <input placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" v-else type="text"  v-model="currentUser.email" class="form-control input-dwn" id="description"/>
                   <button v-show="editingEmail"   id="btnC" class="badge badge-secondary mr-2  btn-dwn " @click="cancelEditemail()"> Cancel </button>
@@ -87,45 +87,99 @@ export default {
   editUserUsername(){    
     this.editingUsername = this.editingUsername == true ? false : true    
     if(this.editingUsername == false){
-    this.updateUser()
-    }  
-    console.log(this.editingUsername)
+    this.updateUserUsername()
+      }
+   
+    
+    // console.log(this.editingUsername)
     },
 
   editUserEmail(){    
     this.editingEmail = this.editingEmail == true ? false : true 
       // if(this.editingEmail== true){
       //  this.$alert("Warning ! After changing you will be logged-out to perform.")}
-      if(this.editingEmail== false){
-        localStorage.user = JSON.stringify(this.currentUser)
-        this.$alert("Profile Updated !")
-        this.updateUser()
+      if(this.editingEmail == false){
+      this.updateUserEmail()
+   
+   
+      
+        // this.$alert("Profile Updated !")
+        // this.updateUser()
+        // })
     
-      }      
-      console.log(this.editingEmail)
+      }
+   
+    
+      // console.log(this.editingEmail)
   },
 
   cancelEditUsername(){
     // this.show()
-    this.editingUsername = this.editingUsername == false      
+    this.editingUsername = this.editingUsername == false 
+      this.$router.go()   
   },
 
   cancelEditemail(){
     // this.show()
     this.editingEmail = this.editingEmail == false
+      this.$router.go()
   },
 
-  updateUser(){
+  updateUserEmail(){
+    
     PostDataService.updateUser(this.currentUser.id, this.currentUser)
-      .then(response => {   
-      // this.logOut()       
-      console.log(response.data);
-      // this.posts.push(data)
-      this.$router.push({ name: "posts" });
+      .then(res => { 
+     
+      if(res){ 
+      localStorage.user = JSON.stringify(this.currentUser)  
+      // this.$router.push({ name: "posts" });
+       }
+              
       })
+     
       .catch(e => {
-        console.log(e);
-      });
+        console.log(e)
+          this.$alert("email already exist")
+          .then(() =>
+          this.$router.go())
+         
+        
+         
+        
+    
+        
+      })
+    
+          
+      
+  },
+  updateUserUsername(){
+    
+    PostDataService.updateUser(this.currentUser.id, this.currentUser)
+      .then(res => { 
+     
+      if(res){ 
+      localStorage.user = JSON.stringify(this.currentUser)  
+      // this.$router.push({ name: "posts" });
+       }
+              
+      })
+     
+      .catch(e => {
+        console.log(e)
+          this.$alert("username already exist")
+          .then(() =>
+          this.$router.go())
+         
+        
+         
+        
+    
+        
+      })
+    
+          
+      
   },
  }
 }
