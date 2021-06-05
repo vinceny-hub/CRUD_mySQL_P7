@@ -51,6 +51,13 @@ export default {
     editingEmail: false,
     isDisplay:false,
   }},  
+
+//  watch:{
+//  user(currentUser){
+//    localStorage.user.username = JSON.stringify(currentUser)
+//  }
+//  },
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -87,9 +94,10 @@ export default {
 
   editUserEmail(){    
     this.editingEmail = this.editingEmail == true ? false : true 
-      if(this.editingEmail== true){
-       this.$alert("Warning ! After changing you will be logged-out to perform.")}
+      // if(this.editingEmail== true){
+      //  this.$alert("Warning ! After changing you will be logged-out to perform.")}
       if(this.editingEmail== false){
+        localStorage.user = JSON.stringify(this.currentUser)
         this.$alert("Profile Updated !")
         this.updateUser()
     
