@@ -1,12 +1,12 @@
 
-const multer = require('multer');                                       // Importation du package multer
+const multer = require('multer');                                       // import multer
 
-const storage = multer.diskStorage({                                    // Destination du fichier sur le disque
+const storage = multer.diskStorage({                                    // path destination
   destination: (req, file, callback) => {
   callback(null, 'images');
   },
 
-  filename: (req, file, callback) => {                                  // Configuration du nom du fichier (nom + extension + date)
+  filename: (req, file, callback) => {                                  //  name / extension / date
     const fileName = file.originalname.split('.')[0]
     const extension = file.originalname.split('.')[1]
     const name = fileName.split(' ').join('_');
@@ -34,12 +34,12 @@ module.exports = multer({storage: storage}).single('file');
 //     'image/jpeg': 'jpg',
 //     'image/png': 'png'
 // }
-// //destination de l'import des images
+// //destination folder
 // const storage = multer.diskStorage({
 //     destination: (req, file, callback) => { 
 //     callback(null, 'images')
 // },
-// //nom du fichier image, nouveau nom crée en fonction de la date de création
+// //file image, new name depend of creation date
 // filename: (req, file, callback) => {
 //     const name = file.originalname.split(' ').join('_')
 //     const extension = MIME_TYPES[file.mimetype]

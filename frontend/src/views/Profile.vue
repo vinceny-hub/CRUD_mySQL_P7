@@ -170,10 +170,14 @@ export default {
       })
      
       .catch(e => {
+        let cUser = JSON.parse(localStorage.getItem('user'))
         console.log(e)
           this.$alert("email already exist")
           .then(() =>
-          this.$router.go())
+           this.currentUser.email = cUser.email
+          // this.$router.go())
+          )
+          
          
         
          
@@ -226,18 +230,21 @@ export default {
               
       })
      
-      .catch(e => {
+        .catch(e => {
+        let cUser = JSON.parse(localStorage.getItem('user'))
         console.log(e)
-          this.$alert("username already exist")
+          this.$alert("user already exist")
           .then(() =>
-          this.$router.go())
-         
+           this.currentUser.username = cUser.username
+          // this.$router.go())
+          )
+           })
         
          
         
     
         
-      })
+      
     
           
       
