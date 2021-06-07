@@ -11,7 +11,7 @@
                   <header class="jumbotron">
                     <h3> <strong> {{currentUser.username}} </strong> Profile </h3>
                   </header>
-                  <button v-if="currentUser.id" class="badge badge-danger mr-2 btn-up float-right" @click="deleteUser"> Delete account </button>  
+                  <button v-if="currentUser.id" class="badge badge-danger mr-2 btn-up float-right" @click="editDeleteUser"> Delete account </button>  
                   <p class="p-up" v-if="!editingUsername"><strong>Username : {{currentUser.username}} </strong></p>
                   <input placeholder="Type something here..." ref="myTextarea" v-else type="text"  v-model="currentUser.username" class="form-control input-dwn" id="description"/>
                   <button v-show="editingUsername"   id="btnC" class="badge badge-secondary mr-2 btn-dwn " @click="cancelEditUsername()"> Cancel </button>
@@ -19,8 +19,13 @@
                   <p class="p-up" v-if="!editingEmail"><strong>Email : {{currentUser.email}}  </strong></p>
                   <input placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" v-else type="text"  v-model="currentUser.email" class="form-control input-dwn" id="description"/>
                   <button v-show="editingEmail"   id="btnC" class="badge badge-secondary mr-2  btn-dwn " @click="cancelEditemail()"> Cancel </button>
-                  <button class="badge badge-success  btn-dwn  buttonCEC" href="#top" @click="editUserEmail(currentUser)">  {{editingEmail? 'Update':'Edit'}} </button><p  v-show="editingEmail" class="warning"> Warning ! You will be logged-out to perform changes </p>
+                  <button class="badge badge-success  btn-dwn  buttonCEC" href="#top" @click="editUserEmail(currentUser)">  {{editingEmail? 'Update':'Edit'}} </button><p  v-show="editingEmail" class="warning"></p>
                   <br>
+                  <!-- <p class="p-up" v-if="!editingPassword"><strong>AccessToken : {{currentUser.accessToken}}  </strong></p>
+                  <input placeholder="Type something here..." ref="myTextarea" :min-height="30" :max-height="350" v-else type="text"  v-model="currentUser.accessToken" class="form-control input-dwn" id="description"/>
+                  <button v-show="editingPassword"   id="btnC" class="badge badge-secondary mr-2  btn-dwn " @click="cancelEditPassword()"> Cancel </button>
+                  <button class="badge badge-success  btn-dwn  buttonCEC" href="#top" @click="editUserPassword(currentUser)">  {{editingPassword? 'Update':'Edit'}} </button><p  v-show="editingPassword" class="warning"> Warning ! You will be logged-out to perform changes </p>
+                  <br> -->
                   <p class=""> <strong>Id :</strong>  {{currentUser.id}}  </p>
                   <strong>Authorities:</strong>
                   <ul class="p-dwn">
@@ -74,6 +79,19 @@ export default {
     this.$router.push('/login');
   },
 
+  editDeleteUser(){
+      this.$confirm("Account will be deleted this action is irreversible", 'Are you sure ?').then(() => {
+      this.deleteUser()
+      })
+        // .then(response => {
+        // console.log(response.data);    
+        // })
+       .catch(e => {
+        console.log(e);
+        });    
+  
+  },
+
   deleteUser() {
     PostDataService.deleteUser(this.currentUser.id)     
       .then(()=> {
@@ -108,21 +126,35 @@ export default {
         // })
     
       }
+
    
     
       // console.log(this.editingEmail)
   },
 
+  // editUserPassword(){    
+  //   this.editingPassword = this.editingPassword == true ? false : true    
+  //   if(this.editingPassword == false){
+  //   this.updateUserPassword()
+  //     }
+  //      },
+
   cancelEditUsername(){
     // this.show()
     this.editingUsername = this.editingUsername == false 
-      this.$router.go()   
+    let cUser = JSON.parse(localStorage.getItem('user'))
+    console.log(cUser.username)
+    this.currentUser.username = cUser.username
+      // this.$router.go()   
   },
 
   cancelEditemail(){
     // this.show()
     this.editingEmail = this.editingEmail == false
-      this.$router.go()
+      // this.$router.go()
+    let cUser = JSON.parse(localStorage.getItem('user'))
+    console.log(cUser.username)
+    this.currentUser.email = cUser.email
   },
 
   updateUserEmail(){
@@ -153,6 +185,35 @@ export default {
           
       
   },
+
+  //  updateUserPassword(){
+    
+  //   PostDataService.updateUser(this.currentUser.id, this.currentUser)
+  //     .then(res => { 
+     
+  //     if(res){ 
+  //     localStorage.user = JSON.stringify(this.currentUser)  
+  //     // this.$router.push({ name: "posts" });
+
+  //      }
+              
+  //     })
+     
+  //     .catch(e => {
+  //       console.log(e)
+  //         this.$alert("email already exist")
+  //         .then(() =>
+  //         this.$router.go())
+         
+          
+        
+  //     })
+    
+          
+  // },
+
+
+
   updateUserUsername(){
     
     PostDataService.updateUser(this.currentUser.id, this.currentUser)
