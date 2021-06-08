@@ -33,7 +33,10 @@ and modify fields USER, PASSWORD, & DB as you configure your database
 "dialect": "mysql"
 },
 
-************************************************************
+*******************************************************************************************************
+Open folder CRUD_mySQL_P7 in the terminal of your favorite SOURCE-CODE EDITOR and follow the next steps
+*******************************************************************************************************
+
 Frontend 
 Type in the Frontend folder :
 

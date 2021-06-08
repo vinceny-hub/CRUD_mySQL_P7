@@ -321,8 +321,6 @@ export default {
       var data = {    
         description: this.post.description,
         id : dataUser.id,
-        // username : dataUser.username,
-        //  userId: dataUser.id,
       }
       PostDataService.create(data)
         .then(response => {        
