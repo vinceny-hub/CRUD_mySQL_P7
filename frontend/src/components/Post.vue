@@ -18,7 +18,7 @@
                         <a href="#"><b> {{ currentPost.user.username }} </b></a>
                           made a post.
                       </div>
-                      <h6 class="text-muted time">{{  currentPost.createdAt.slice(5,10).replace(/-/g,` `) }} {{  currentPost.createdAt.slice(0,4).replace(/-/g,`.`) }} {{ currentPost.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
+                      <h6 class="text-muted time"> {{ currentPost.createdAt.slice(7,10).replace(/-/g,` `) }} {{ currentPost.createdAt.slice(5,7).replace(/-/g,` `) }} {{ currentPost.createdAt.slice(0,4).replace(/-/g,`.`) }} {{currentPost.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
                     </div>
                   </div>                                          <!-- shown if not editing -->
                   <div class="kl card aPost rounded card-white" v-if="!editing"> 
@@ -57,7 +57,7 @@
                             <div class="list-group-item">
                               <a href="#"><b> {{ comment.user.username }} </b></a> 
                               <span> made a comment </span>  
-                              <h6 class="text-muted time">{{  comment.createdAt.slice(5,10).replace(/-/g,` `) }} {{  comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{ comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
+                              <h6 class="text-muted time"> {{ comment.createdAt.slice(7,10).replace(/-/g,` `) }} {{ comment.createdAt.slice(5,7).replace(/-/g,` `) }} {{ comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
                               <div>{{ comment.description }} </div>    
                                              <!-- Edit button is accesssible if current user is user whom made comment of the post or administrator-->  
                               <a :href="'/comments/' + comment.id"><button v-if="dataUser.id == comment.userId || showAdminBoard" class="btn btn-success float-right"> Edit </button></a>

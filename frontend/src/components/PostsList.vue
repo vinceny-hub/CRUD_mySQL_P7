@@ -62,7 +62,7 @@
                         <span class="colorLink"><b> {{ post.user.username}} </b></span> 
                           made a post.
                     </div>
-                    <h6 class="text-muted time">{{ post.createdAt.slice(5,10).replace(/-/g,` `) }} {{ post.createdAt.slice(0,4).replace(/-/g,`.`) }} {{post.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
+                    <h6 class="text-muted time"> {{ post.createdAt.slice(7,10).replace(/-/g,` `) }} {{ post.createdAt.slice(5,7).replace(/-/g,` `) }} {{ post.createdAt.slice(0,4).replace(/-/g,`.`) }} {{post.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
                   </div>                                                          <!-- posted image -->
                   <div class="card aPost rounded card-white"> <h5><strong>{{ post.description }}</strong></h5><img :src="post.imageUrl"></div> 
                   <div class="">
@@ -72,7 +72,7 @@
                           <div  v-for="comment in comments" :key="comment.id"> <div class="comment float-right card rounded card-white" v-if="post.id == comment.postId">                    
                             <div class="list-group-item">  
                               <div class="title h5"> <a href="#"><b> {{ comment.user.username }} </b></a>  made a comment </div>  
-                              <h6 class="text-muted time">{{ comment.createdAt.slice(5,10).replace(/-/g,` `) }} {{ comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
+                              <h6 class="text-muted time"> {{ comment.createdAt.slice(7,10).replace(/-/g,` `) }} {{ comment.createdAt.slice(5,7).replace(/-/g,` `) }} {{ comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
                               <div>{{ comment.description }} </div>
                             </div>    
                           </div>
