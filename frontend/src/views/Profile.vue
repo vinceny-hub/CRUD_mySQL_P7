@@ -57,12 +57,6 @@ export default {
     isDisplay:false,
   }},  
 
-//  watch:{
-//  user(currentUser){
-//    localStorage.user.username = JSON.stringify(currentUser)
-//  }
-//  },
-
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -88,8 +82,7 @@ export default {
         // })
        .catch(e => {
         console.log(e);
-        });    
-  
+        });     
   },
 
   deleteUser() {
@@ -107,29 +100,16 @@ export default {
     if(this.editingUsername == false){
     this.updateUserUsername()
       }
-   
-    
-    // console.log(this.editingUsername)
-    },
+       // console.log(this.editingUsername)
+  },
 
   editUserEmail(){    
     this.editingEmail = this.editingEmail == true ? false : true 
       // if(this.editingEmail== true){
       //  this.$alert("Warning ! After changing you will be logged-out to perform.")}
       if(this.editingEmail == false){
-      this.updateUserEmail()
-   
-   
-      
-        // this.$alert("Profile Updated !")
-        // this.updateUser()
-        // })
-    
-      }
-
-   
-    
-      // console.log(this.editingEmail)
+      this.updateUserEmail()    
+      }  
   },
 
   // editUserPassword(){    
@@ -137,7 +117,7 @@ export default {
   //   if(this.editingPassword == false){
   //   this.updateUserPassword()
   //     }
-  //      },
+  //   },
 
   cancelEditUsername(){
     // this.show()
@@ -157,18 +137,14 @@ export default {
     this.currentUser.email = cUser.email
   },
 
-  updateUserEmail(){
-    
+  updateUserEmail(){    
     PostDataService.updateUser(this.currentUser.id, this.currentUser)
-      .then(res => { 
-     
+    .then(res => {      
       if(res){ 
       localStorage.user = JSON.stringify(this.currentUser)  
       // this.$router.push({ name: "posts" });
-       }
-              
-      })
-     
+      }              
+    })     
       .catch(e => {
         let cUser = JSON.parse(localStorage.getItem('user'))
         console.log(e)
@@ -176,79 +152,30 @@ export default {
           .then(() =>
            this.currentUser.email = cUser.email
           // this.$router.go())
-          )
-          
-         
-        
-         
-        
-    
-        
-      })
-    
-          
-      
+          )        
+      })     
   },
 
-  //  updateUserPassword(){
-    
-  //   PostDataService.updateUser(this.currentUser.id, this.currentUser)
-  //     .then(res => { 
-     
-  //     if(res){ 
-  //     localStorage.user = JSON.stringify(this.currentUser)  
-  //     // this.$router.push({ name: "posts" });
-
-  //      }
-              
-  //     })
-     
-  //     .catch(e => {
-  //       console.log(e)
-  //         this.$alert("email already exist")
-  //         .then(() =>
-  //         this.$router.go())
-         
-          
-        
-  //     })
-    
-          
-  // },
-
-
-
-  updateUserUsername(){
-    
+  updateUserUsername(){    
     PostDataService.updateUser(this.currentUser.id, this.currentUser)
-      .then(res => { 
+    .then(res => { 
      
       if(res){ 
       localStorage.user = JSON.stringify(this.currentUser)  
       // this.$router.push({ name: "posts" });
-       }
-              
-      })
-     
-        .catch(e => {
-        let cUser = JSON.parse(localStorage.getItem('user'))
-        console.log(e)
-          this.$alert("user already exist")
-          .then(() =>
-           this.currentUser.username = cUser.username
-          // this.$router.go())
-          )
-           })
-        
-         
-        
-    
-        
-      
-    
-          
-      
+      }              
+    })     
+    .catch(e => {
+      let cUser = JSON.parse(localStorage.getItem('user'))
+      console.log(e)
+      this.$alert("user already exist")
+      .then(() =>
+      this.currentUser.username = cUser.username
+        // this.$router.go())
+        )
+    })
   },
+
  }
 }
 

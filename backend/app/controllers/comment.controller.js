@@ -115,31 +115,56 @@ exports.update = (req, res) => {
       });
     });
 };
-    // Delete a Comment in database
-  exports.delete = (req, res) => {
-    const post_id = req.params.id;
-    // comment.findOne({ where: { post_id : req.params.id } })
-    console.log(post_id)
-    Comment.destroy({
-      where: {post_id : post_id}
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Comment was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Comment with post=${post_id}. Maybe Comment was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Commment with id=" + post_id
+
+exports.deletePostComment = (req, res) => {
+  const id = req.params.id;
+  console.log(id)
+  Comment.destroy({
+    where: { id : id}
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Comment was deleted successfully!"
         });
+      } else {
+        res.send({
+          message: `Cannot Comment with id=${id}. Maybe Comment was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Comment with id=" + id
       });
-  };
+    });
+};
+
+    // Delete a Comment in database
+  // exports.delete = (req, res) => {
+  //   const post_id = req.params.id;
+  //   // comment.findOne({ where: { post_id : req.params.id } })
+  //   console.log(post_id)
+  //   Comment.destroy({
+  //     where: {post_id : post_id}
+  //   })
+  //     .then(num => {
+  //       if (num == 1) {
+  //         res.send({
+  //           message: "Comment was deleted successfully!"
+  //         });
+  //       } else {
+  //         res.send({
+  //           message: `Cannot delete Comment with post=${post_id}. Maybe Comment was not found!`
+  //         });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       res.status(500).send({
+  //         message: "Could not delete Commment with id=" + post_id
+  //       });
+  //     });
+  // };
     // Delete All comments in database
   exports.deleteAll = (req, res) => {
     Comment.destroy({

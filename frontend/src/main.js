@@ -32,6 +32,7 @@ Vue.use(TextareaAutosize)
 Vue.use(VueSimpleAlert);
 
 
+
 new Vue({
   router,
   store,

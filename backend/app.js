@@ -87,7 +87,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const postRoutes = require("./app/routes/post.routes"); // get route post
 const commentRoutes = require("./app/routes/comment.routes") // get route comments
-const commentPostRoutes = require("./app/routes/commentPost.routes") // get route delete a comment of a post
+// const commentPostRoutes = require("./app/routes/commentPost.routes") // get route delete a comment of a post
 const userManageRoutes = require("./app/routes/userManage.routes")
 const { role } = require('./app/models/index')
 
@@ -100,7 +100,7 @@ app.use('/images', express.static(path.join(__dirname,'images')))  // image path
 app.use('/api/posts', postRoutes); // post route path
 app.use('/api/user', userManageRoutes); // user modification route path
 app.use('/api/comment', commentRoutes); // comment route path
-app.use('/api/comments', commentPostRoutes); // route path to delete a comment of a post
+// app.use('/api/comments', commentPostRoutes); // route path to delete a comment of a post
 
 
 module.exports = app

@@ -18,7 +18,7 @@
                         <a href="#"><b> {{ currentPost.user.username }} </b></a>
                           made a post.
                       </div>
-                      <h6 class="text-muted time">1 minute ago</h6>
+                      <h6 class="text-muted time">{{  currentPost.createdAt.slice(5,10).replace(/-/g,` `) }} {{  currentPost.createdAt.slice(0,4).replace(/-/g,`.`) }} {{ currentPost.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
                     </div>
                   </div>                                          <!-- shown if not editing -->
                   <div class="kl card aPost rounded card-white" v-if="!editing"> 
@@ -57,7 +57,7 @@
                             <div class="list-group-item">
                               <a href="#"><b> {{ comment.user.username }} </b></a> 
                               <span> made a comment </span>  
-                              <h6 class="text-muted time">1 minute ago</h6> 
+                              <h6 class="text-muted time">{{  comment.createdAt.slice(5,10).replace(/-/g,` `) }} {{  comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{ comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
                               <div>{{ comment.description }} </div>    
                                              <!-- Edit button is accesssible if current user is user whom made comment of the post or administrator-->  
                               <a :href="'/comments/' + comment.id"><button v-if="dataUser.id == comment.userId || showAdminBoard" class="btn btn-success float-right"> Edit </button></a>
@@ -151,45 +151,12 @@ export default {
     // save comment
      saveComment() {     
        
-      //   var upData = {    
-      //  description: this.currentPost.description}
-      //  JSON.parse(JSON.stringify(upData))
-      // PostDataService.updateAPost(this.currentPost.id,upData)
-      // // console.log(this.currentPost.id,upData)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     this.message = 'The post was updated successfully!';
-      //     this.$router.push({ name: "posts" });
-      //   })
-
-      // let dataUser = JSON.parse(localStorage.getItem("user"))
-      // console.log(dataUser)     
-      //  var comData = {
-        
-      //   description: this.comment.description
-      //  }
-      //   var comUData = {
-      //   userId : dataUser.id 
-      //   }
-       
-      //     var comPData = {
-      //  postId : this.currentPost.id
-      //     }   
-
-          // let data = { comData, comPData,comUData }
-      // }   
-      // let comDATA = JSON.stringify(comData)
-      // console.log(comData)
-
       let data = {
         description: this.comment.description,
         u: this.currentUser.id,
         postId: this.currentPost.id
       }
       PostCommentService.create(data)
-      //  PostCommentService.create (comUData)
-      //   PostCommentService.create(comPData)
-      // console.log(comDATA)
         .then(response => {
           this.comment.id = response.data.id;      
           // console.log(response.data);
@@ -202,7 +169,7 @@ export default {
         });
     },
     // get all comment of a post
-     getComment() {
+    getComment() {
       PostCommentService.getAll()
         .then(response => {
           this.comments = response.data;
@@ -269,13 +236,10 @@ export default {
     },
     // delete post
     deletePost() {
-       PostDataService.delete(this.currentPost.id)
-      
-        .then(()=> {
-         
-          PostCommentService.delete(this.currentPost.id)   
-          // console.log(response.data);
-         
+       PostDataService.delete(this.currentPost.id)      
+        .then(()=> {         
+          // PostCommentService.delete(this.currentPost.id)   
+          // console.log(response.data);         
           this.$router.push({ name: "posts" })
           .then(() => {
           // location.reload()

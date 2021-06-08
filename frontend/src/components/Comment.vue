@@ -12,7 +12,7 @@
                     <a href="#"><b> {{ currentComment.user.username }} </b></a>
                       made a post.
                   </div>
-                  <h6 class="text-muted time">1 minute ago</h6>
+                  <h6 class="text-muted time">{{  currentComment.createdAt.slice(5,10).replace(/-/g,` `) }} {{  currentComment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{ currentComment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
                 </div>                            
               </div>                                                 <!-- get comment if editing -->
               <div v-if="!editing"> <h5><strong>{{ currentComment.description }}</strong></h5></div> 
@@ -32,7 +32,7 @@
 
 <script>
 import PostCommentService from "../services/PostCommentService";
-import CommentPostService from "../services/CommentPostService";
+// import CommentPostService from "../services/CommentPostService";
 
 export default {
   name: "post",
@@ -133,7 +133,7 @@ export default {
     },
     // delete a comment
     deleteComment() {
-      CommentPostService.deletePostComment(this.currentComment.id)      
+      PostCommentService.delete(this.currentComment.id)    
         .then(response => {
           console.log(response.data);
           this.$router.push({ name: "posts" });

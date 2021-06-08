@@ -59,10 +59,10 @@
                 <div class="card-body">
                   <div class="float meta ">                     
                     <div class="title h5">                         <!-- Link to profile page  -->
-                        <a  :href="'/profile/' + post.username"><b> {{ post.user.username}} </b></a> 
+                        <span class="colorLink"><b> {{ post.user.username}} </b></span> 
                           made a post.
                     </div>
-                    <h6 class="text-muted time">1 minute ago</h6>
+                    <h6 class="text-muted time">{{ post.createdAt.slice(5,10).replace(/-/g,` `) }} {{ post.createdAt.slice(0,4).replace(/-/g,`.`) }} {{post.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6>
                   </div>                                                          <!-- posted image -->
                   <div class="card aPost rounded card-white"> <h5><strong>{{ post.description }}</strong></h5><img :src="post.imageUrl"></div> 
                   <div class="">
@@ -72,7 +72,7 @@
                           <div  v-for="comment in comments" :key="comment.id"> <div class="comment float-right card rounded card-white" v-if="post.id == comment.postId">                    
                             <div class="list-group-item">  
                               <div class="title h5"> <a href="#"><b> {{ comment.user.username }} </b></a>  made a comment </div>  
-                              <h6 class="text-muted time">1 minute ago</h6> 
+                              <h6 class="text-muted time">{{ comment.createdAt.slice(5,10).replace(/-/g,` `) }} {{ comment.createdAt.slice(0,4).replace(/-/g,`.`) }} {{comment.createdAt.slice(11,16).replace(/:/g,`h`)}} (UTC)</h6> 
                               <div>{{ comment.description }} </div>
                             </div>    
                           </div>
@@ -166,10 +166,10 @@ export default {
  
   methods: {
 
-     adminRole(){
+    adminRole(){
     if (this.currentUser.id == '1'){
       let adRo = this.currentUser.id
-        console.log(adRo)
+      console.log(adRo)
     }
   
     },
@@ -186,7 +186,7 @@ export default {
         formData.append("file", this.post.imageUrl, this.post.imageUrl.name);
         formData.append("id", dataUser.id);
         formData.append("username", dataUser.username,);
-    
+
         UpLoadFilesService.upload(formData)
          .then(response => {
           
@@ -214,15 +214,15 @@ export default {
     },
     // edit a post
     editPost(){    
-    this.editing = this.editing == true?false:true    
-    if(this.editing== false){
-    this.updatePost()
-    }      
-    console.log(this.editing)
+      this.editing = this.editing == true?false:true    
+      if(this.editing== false){
+      this.updatePost()
+      }      
+      console.log(this.editing)
     },
     // get all comments
     getComment() {
-    PostCommentService.getAll()
+      PostCommentService.getAll()
       .then(response => {          
         this.comments = response.data;
         console.log(response.data.description);
@@ -231,12 +231,12 @@ export default {
       .catch(e => {
         console.log(e);
       });
-  },     
+  },   
   // load(){
   //     location.reload()
   // }, 
       // update a post
-      updatePost() {
+    updatePost() {
       PostDataService.update(this.currentPost.id, this.currentPost)
         .then(response => {           
           console.log(response.data);      
@@ -246,7 +246,7 @@ export default {
         });     
     },
       // delete a post
-      deletePost() {    
+    deletePost() {    
       PostDataService.delete(this.currentPost.id)
         .then(response => {
           console.log(response.data);
@@ -257,48 +257,31 @@ export default {
         });
     },
       // get all posts
-      retrievePosts() {
-        // console.log()
+    retrievePosts() {
+      // console.log()
       PostDataService.getAll()
-        .then(response => {
-        
+        .then(response => {        
           this.posts = response.data;
           console.log(response.data);
-        })
-        
+         
+        })        
         .catch(e => {
           console.log(e);
         });
     },
-      // retrieveUsers(id) {
-
-      // const id = 
-      // PostDataService.getAnUser(id)
-      //   .then(response => {
-      //     this.users = response.data;
-      //     console.log(response.data);
-      //   })        
-      //   .catch(e => {
-      //     console.log(e);
-      //   })
-      // },
-
-       retrieveAllUsers() {
-
-      
+      //retrieve all users 
+    retrieveAllUsers() {      
       PostDataService.getAllUsers()
-        .then(response => {
-          this.users = response.data;
-          console.log(response.data);
-        })        
-        .catch(e => {
-          console.log(e);
-        })
-      },
-
-   
+      .then(response => {
+        this.users = response.data;
+        console.log(response.data);
+      })        
+      .catch(e => {
+        console.log(e);
+      })
+    },   
       //refresing posts list
-      refreshList() {
+    refreshList() {
       this.retrievePosts();
       this.currentPost = null;
       this.currentIndex = -1;
@@ -357,40 +340,31 @@ export default {
       this.post = {};
     },
       // logout
-      logOut() {
+    logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
     }
   },
     // get all posts
     retrievePosts() {
-        PostDataService.getAll()
-          .then(response => {
-            this.posts = response.data;
-            console.log(response.data);
-          
-          })
-          .catch(e => {
-            console.log(e);
-          });
+      PostDataService.getAll()
+        .then(response => {
+          this.posts = response.data;
+          console.log(response.data);          
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     
     mounted() {
-      // console.log( this.$route.params)
       this.message = '';
       this.getComment()
       this.retrievePosts();
       // this.retrieveUsers()
        this.retrieveAllUsers()
 
-  }
-  
-          // few possibles usefull for savePost()
-          // this.username
-          // console.log(response);
-          // this.submitted = true;
-          // this.posts.push(data)
-  
+  }        
 }
 
 </script>
@@ -481,4 +455,8 @@ li{
   border: 1px solid  #091f43;
   color:  #091f43;
 }
+.colorLink{
+  color: #0069d9;
+}
+
 </style>

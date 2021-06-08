@@ -20,7 +20,9 @@ const comments = require("../controllers/comment.controller");
   router.put("/:id", auth, comments.update);
 
   // Delete a Comment with id
-  router.delete("/:id", auth, comments.delete);
+  // router.delete("/:id", auth, comments.delete);
+
+  router.delete("/:id", auth, comments.deletePostComment);  // route to delete a comment of a post
 
   // Delete all Comments
   router.delete("/", auth, comments.deleteAll);

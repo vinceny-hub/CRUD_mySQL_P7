@@ -49,7 +49,7 @@ server.on('listening', () => {
   console.log('Listening on ' + bind)
 })
 const db = require("./app/models/index"); // get db from models and sequelize
-require("./app/config/roles")
+// require("./app/config/roles")
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db');
   // initial();
