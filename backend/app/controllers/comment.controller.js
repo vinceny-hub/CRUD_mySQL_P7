@@ -1,4 +1,3 @@
-const { faUserInjured } = require("@fortawesome/free-solid-svg-icons");
 const db = require("../models/");
 require('../middleware/auth')
 const Comment = db.comments;
